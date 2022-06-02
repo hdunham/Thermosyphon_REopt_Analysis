@@ -25,9 +25,9 @@ function run_reopt_scenarios()
     inputs["ElectricStorage"]["min_kwh"] = size_kwh
     inputs["ElectricStorage"]["max_kwh"] = size_kwh
     inputs["ElectricStorage"]["installed_cost_per_kw"] = 0
-    inputs["ElectricStorage"]["installed_cost_per_kwh"] = cost_kwh
+    inputs["ElectricStorage"]["installed_cost_per_kwh"] = cost_per_kwh
     inputs["ElectricStorage"]["replace_cost_per_kw"] = 0
-    inputs["ElectricStorage"]["replace_cost_per_kwh"] = cost_kwh
+    inputs["ElectricStorage"]["replace_cost_per_kwh"] = cost_per_kwh
     inputs["ElectricStorage"]["inverter_replacement_year"] = 10
     inputs["ElectricStorage"]["battery_replacement_year"] = 10
 
@@ -80,3 +80,10 @@ function summarize_results()
     end
 end
 
+function BESS_kwh(; num_batteries, volts, amp_hours)
+    return num_batteries * volts * amp_hours / 1000
+end
+
+function BESS_kw(; num_batteries, volts, max_amps)
+    return num_batteries * volts * max_amps / 1000
+end

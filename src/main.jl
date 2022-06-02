@@ -9,14 +9,14 @@ global primalstop = 1e-4
 
 # BATTERY SPECIFICATIONS
 # in order to achieve reasonable solve time, battery sizing is fixed
-num_batteries = 2
-volts = 12.8
-amp_hours = 54
-max_amps = 25
-global size_kwh = num_batteries * volts * amp_hours / 1000
-global size_kw = num_batteries * volts * max_amps / 1000
-total_cost = 948
-global cost_kwh = total_cost / size_kwh
+num_batteries_in_BESS = 2 # batteries in series
+volts_per_battery = 12.8
+amp_hours_per_battery = 54
+max_amps_per_battery = 25
+BESS_total_cost = 948
+global size_kwh = BESS_kwh(num_batteries=num_batteries_in_BESS, volts=volts_per_battery, amp_hours=amp_hours_per_battery)
+global size_kw = BESS_kw(num_batteries=num_batteries_in_BESS, volts=volts_per_battery, max_amps=max_amps_per_battery)
+global cost_per_kwh = BESS_total_cost / size_kwh
 
 # SCENARIOS
 global sites = [
