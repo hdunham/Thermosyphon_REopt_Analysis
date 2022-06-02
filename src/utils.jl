@@ -68,9 +68,9 @@ function summarize_results()
             df_results_summary = hcat(df_results_summary, DataFrame(
                     "+$(plus_deg)C" => [
                         round(results["Thermosyphon"]["min_annual_active_cooling_mmbtu"], digits=3),
-                        round(results["PV"]["size_kw"]*1000, digits=0),
-                        round(results["ElectricStorage"]["size_kw"]*1000, digits=0),
-                        round(results["ElectricStorage"]["size_kwh"]*1000, digits=0),
+                        results["PV"]["size_kw"]*1000,
+                        results["ElectricStorage"]["size_kw"]*1000,
+                        results["ElectricStorage"]["size_kwh"]*1000,
                         round(count(i -> (i > 0), results["Thermosyphon"]["active_cooling_series_btu_per_hour"]) * 100 / 8760, digits=2),
                         if typeof(results["optimality_gap"])<:Real round(results["optimality_gap"]*100, digits=2) else results["optimality_gap"] end
                     ]
