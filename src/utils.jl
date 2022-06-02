@@ -18,7 +18,7 @@ function run_reopt_scenarios()
     PV_prod_factor_col_name = "ProdFactor"
     temp_deg_C_col_name = "TempC"
 
-    inputs = JSON.parsefile("data/thermosyphon_scenario.json")
+    inputs = JSON.parsefile(joinpath("data","thermosyphon_scenario.json"))
     inputs["ElectricLoad"]["loads_kw"] = zeros(8760)
     inputs["ElectricStorage"]["min_kw"] = size_kw
     inputs["ElectricStorage"]["max_kw"] = size_kw
@@ -36,7 +36,7 @@ function run_reopt_scenarios()
         for plus_deg in plus_deg_C_variations
             inputs["Site"]["longitude"] = site["longitude"]
             inputs["Site"]["latitude"] = site["latitude"]
-            weather_file = CSV.File("data/$(lowercase(site["name"]))_weather.csv")
+            weather_file = CSV.File(joinpath("data","$(lowercase(site["name"]))_weather.csv"))
             prod_factor =  getproperty(weather_file,Symbol(PV_prod_factor_col_name))
             amb_temp_degF =  (getproperty(weather_file,Symbol(temp_deg_C_col_name)) .+ plus_deg) .* 1.8 .+ 32
             inputs["PV"]["prod_factor_series"] = prod_factor
@@ -76,7 +76,7 @@ function summarize_results()
                     ]
             ))
         end
-        CSV.write("results/$(lowercase(site["name"]))_results_summary.csv", df_results_summary)
+        CSV.write(joinpath("results","$(lowercase(site["name"]))_results_summary.csv", df_results_summary))
     end
 end
 
