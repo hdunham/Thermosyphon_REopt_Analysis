@@ -25,7 +25,7 @@ global sites = [
         Dict("name" => "aniak", "longitude" => -159.533, "latitude" => 61.583)
     ]
 # each of these values indicates an analysis scenario where TMY temperature profile is increased by that amount
-global plus_deg_C_variations = [
+global warming_plus_deg_C = [
         0,
         2,
         5

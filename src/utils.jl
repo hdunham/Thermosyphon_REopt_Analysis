@@ -37,7 +37,7 @@ function run_reopt_scenarios()
 
     for site in sites
         # df_results_summary = DataFrame("Warming scenario" => ["Active cooling needed (MMBtu)", "PV size (W)", "Battery size (W)", "Battery size (Wh)"])
-        for plus_deg in plus_deg_C_variations
+        for plus_deg in warming_plus_deg_C
             inputs["Site"]["longitude"] = site["longitude"]
             inputs["Site"]["latitude"] = site["latitude"]
             weather_file = CSV.File(joinpath("data","$(lowercase(site["name"]))_weather.csv"))
@@ -67,7 +67,7 @@ end
 function summarize_results()
     for site in sites
         df_results_summary = DataFrame("Warming scenario" => ["Active cooling needed (MMBtu)", "PV size (W)", "Battery size (W)", "Battery size (Wh)", "Time actively cooling (%)", "Optimality gap (%)"])
-        for plus_deg in plus_deg_C_variations
+        for plus_deg in warming_plus_deg_C
             results = JSON.parsefile(results_filename(site, plus_deg))
             df_results_summary = hcat(df_results_summary, DataFrame(
                     "+$(plus_deg)C" => [
