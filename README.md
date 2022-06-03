@@ -18,33 +18,11 @@ julia> import Pkg
 julia> Pkg.instantiate()
 ```
 
-# REopt Inputs (excluding Thermopsyhon model)
-The [REopt.jl package](https://github.com/NREL/REopt.jl) has [online documentation](https://nrel.github.io/REopt.jl/dev/) (you can also find the documentation linked in the Github repository README.md). [REopt inputs](https://nrel.github.io/REopt.jl/dev/reopt/inputs/) are provided either from a JSON file or a Julia dictionary. In the examples herein we use the following JSON file:
-```javascript
-{
-    "Site": {
-        "longitude": -118.1164613,
-        "latitude": 34.5794343
-    },
-    "Thermosyphon": {
-    },
-    "PV": {
-    },
-    "ElectricLoad": {
-        "doe_reference_name": "RetailStore",
-        "annual_kwh": 10000000.0
-    },
-    "ElectricStorage": {
-        "model_degradation": true
-    },
-    "ElectricTariff": {
-        "urdb_label": "5ed6c1a15457a3367add15ae"
-    }
-}
-```
-Note that if we removed a technology from the JSON file then this technology would not be evaluated. 
+# REopt Inputs
+The master branch of [REopt.jl package](https://github.com/NREL/REopt.jl) has [online documentation](https://nrel.github.io/REopt.jl/dev/) (you can also find the documentation linked in the Github repository README.md). [REopt inputs](https://nrel.github.io/REopt.jl/dev/reopt/inputs/) are provided either from a JSON file or a Julia dictionary. Note that if we removed a technology key from the JSON file then this technology would not be evaluated.
 
-# Thermosyphon Inputs
+The file data/thermosyphon_scenario.json contains the base set of inputs to be used for an analysis sizing PV with BESS to supply a thermosyphon. For an off-grid system, the `"ElectricUtility"` inputs `outage_start_time_step` and `outage_end_time_step` are set to 1 and 8760 respectively, and the inputs provided in `"ElectricTariff"` aren't used.
+
 This repository uses a [custom branch](https://github.com/NREL/REopt.jl/tree/alaska_thermosyphon) of the REopt.jl package that includes a thermosyphon model. By including the `"Thermosyphon"` key, a thermosyphon will be included in the optimization, using default values for any inputs not provided. 
 Possible inputs for the [thermosyphon model](https://github.com/NREL/REopt.jl/blob/alaska_thermosyphon/src/core/thermosyphon.jl) are:
 | Name                                                    | Type            | Default     |
@@ -59,10 +37,8 @@ Possible inputs for the [thermosyphon model](https://github.com/NREL/REopt.jl/bl
 | `structure_heat_to_ground_mmbtu_per_year`               | Real            | 5.9         |
 Thermosyphon coefficient of performance can be modeled as a flat value by providing a single value for `COP_curve_points_coefficient_of_performance_kw_per_kw`. Alternatively, COP can be modeled as a piecewise function, defined by a list of points. In this case, `COP_curve_points_ambient_temp_degF` and `COP_curve_points_coefficient_of_performance_kw_per_kw` are the temperature and COP values respectively of those points. Defaults for these are used when neither input is provided.
 
-
 # Running Julia code
-The file thermosyphon_scenario.json contains a base set of inputs to use for an analysis sizing DERs to supply a thermosyphon. For an off-grid system, `"ElectricUtility"` inputs `outage_start_time_step` and `outage_end_time_step` are set to 1 and 8760 respectively, and the rate values provided in `"ElectricTariff"` aren't used. 
-Run the following from this repository's top directory:
+The file src/main.jl is this project's main script to run analyses of DERs to supply a thermosyphon. This script defines sites and climate warming scenarios to run, chosen BESS size and cost, and optimization parameters to balance precision and solve time. The script then runs REopt for these scenarios, which each produces a JSON file of results. Finally, key results are summarized in CSV for each site. Modify src/main.jl and data/thermosyphon_scenario.json as desired and then run the following from this repository's top directory:
 ```julia
 julia --project=.
                _
@@ -76,19 +52,4 @@ julia --project=.
 
 
 julia> include("src/main.jl")
-```
-Then you can run any of the functions defined in reopt_sensitivities.jl. For example:
-```julia
-julia> min_avg_soc_sensitivity()
-┌ Info: Checking URDB for
-└   urdb_label = "5ed6c1a15457a3367add15ae"
-┌ Info: Querying PVWatts for prodfactor with
-└   pv.name = "PV"
-[ Info: PVWatts success.
-┌ Warning: Settings.add_soc_incentive is set to true but no incentive will be added because it conflicts with the battery degradation model.
-└ @ REopt ~/.julia/dev/REopt/src/core/reopt.jl:376
-[ Info: Model built. Optimizing...
-presolving:
-(round 1, fast)       26755 del vars, 29780 del conss, 0 add conss, 17619 chg bounds, 0 chg sides, 0 chg coeffs, 0 upgd conss, 0 impls, 0 clqs
-...
 ```
