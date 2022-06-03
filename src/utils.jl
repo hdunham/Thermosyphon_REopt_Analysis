@@ -5,6 +5,7 @@ using DataFrames
 import JSON
 import CSV
 
+
 function results_filename(site, plus_deg)
     if plus_deg == 0
         plus_deg_string = ""
@@ -19,7 +20,10 @@ function run_reopt_scenarios()
     temp_deg_C_col_name = "TempC"
 
     inputs = JSON.parsefile(joinpath("data","thermosyphon_scenario.json"))
-    inputs["ElectricLoad"]["loads_kw"] = zeros(8760)
+    if !("loads_kw" in inputs["ElectricLoad"])
+        inputs["ElectricLoad"]["loads_kw"] = zeros(8760)
+    end
+    inputs["PV"]["max_kw"] = size_kw*2 # tightened max can help reduce solve time
     inputs["ElectricStorage"]["min_kw"] = size_kw
     inputs["ElectricStorage"]["max_kw"] = size_kw
     inputs["ElectricStorage"]["min_kwh"] = size_kwh
