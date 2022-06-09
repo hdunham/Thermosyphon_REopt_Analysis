@@ -23,15 +23,17 @@ function run_reopt_scenarios()
     if !("loads_kw" in inputs["ElectricLoad"])
         inputs["ElectricLoad"]["loads_kw"] = zeros(8760)
     end
-    inputs["PV"]["max_kw"] = size_kw*2 # tightened max can help reduce solve time
-    inputs["ElectricStorage"]["min_kw"] = size_kw
-    inputs["ElectricStorage"]["max_kw"] = size_kw
-    inputs["ElectricStorage"]["min_kwh"] = size_kwh
-    inputs["ElectricStorage"]["max_kwh"] = size_kwh
+    inputs["PV"]["max_kw"] = BESS_size_kw*2 # tightened max can help reduce solve time
+    inputs["PV"]["installed_cost_per_kw"] = PV_capx_cost_per_kw
+    inputs["PV"]["om_cost_per_kw"] = PV_om_cost_per_kw_per_year
+    inputs["ElectricStorage"]["min_kw"] = BESS_size_kw
+    inputs["ElectricStorage"]["max_kw"] = BESS_size_kw
+    inputs["ElectricStorage"]["min_kwh"] = BESS_size_kwh
+    inputs["ElectricStorage"]["max_kwh"] = BESS_size_kwh
     inputs["ElectricStorage"]["installed_cost_per_kw"] = 0
-    inputs["ElectricStorage"]["installed_cost_per_kwh"] = cost_per_kwh
+    inputs["ElectricStorage"]["installed_cost_per_kwh"] = BESS_capx_cost_per_kwh
     inputs["ElectricStorage"]["replace_cost_per_kw"] = 0
-    inputs["ElectricStorage"]["replace_cost_per_kwh"] = cost_per_kwh
+    inputs["ElectricStorage"]["replace_cost_per_kwh"] = BESS_capx_cost_per_kwh
     inputs["ElectricStorage"]["inverter_replacement_year"] = 10
     inputs["ElectricStorage"]["battery_replacement_year"] = 10
 
