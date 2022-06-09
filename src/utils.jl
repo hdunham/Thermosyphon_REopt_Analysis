@@ -6,7 +6,7 @@ import JSON
 import CSV
 
 
-function results_filename(site, plus_deg)
+function results_filename(; site, plus_deg)
     if plus_deg == 0
         plus_deg_string = ""
     else
@@ -15,7 +15,15 @@ function results_filename(site, plus_deg)
     return "results/thermosyphon_results_$(lowercase(site["name"]))$(plus_deg_string).json"
 end
 
-function run_reopt_scenarios()
+function run_reopt_scenarios(; sites, warming_plus_deg_C, 
+                            BESS_size_kwh, BESS_size_kw, 
+                            BESS_capx_cost_per_kwh, 
+                            PV_capx_cost_per_kw, 
+                            PV_om_cost_per_kw_per_year,
+                            maxtime=3600,
+                            relstop=1e-6,
+                            gapstop=1e-6,
+                            primalstop=1e-6)
     PV_prod_factor_col_name = "ProdFactor"
     temp_deg_C_col_name = "TempC"
 
@@ -48,8 +56,8 @@ function run_reopt_scenarios()
             inputs["PV"]["prod_factor_series"] = prod_factor
             inputs["Thermosyphon"]["ambient_temp_degF"] = amb_temp_degF
 
-            global m = Model(()->Xpress.Optimizer(MAXTIME=-maxtime, MIPRELSTOP=relstop, BARGAPSTOP=gapstop, BARPRIMALSTOP=primalstop))
-            global m = Model(()->HiGHS.Optimizer(MAXTIME=-maxtime, MIPRELSTOP=relstop, BARGAPSTOP=gapstop, BARPRIMALSTOP=primalstop))
+            m = Model(()->Xpress.Optimizer(MAXTIME=-maxtime, MIPRELSTOP=relstop, BARGAPSTOP=gapstop, BARPRIMALSTOP=primalstop))
+            m = Model(()->HiGHS.Optimizer(MAXTIME=-maxtime, MIPRELSTOP=relstop, BARGAPSTOP=gapstop, BARPRIMALSTOP=primalstop))
             set_optimizer_attribute(model, "time_limit", 60.0)
 
             results = run_reopt(m, inputs)
@@ -59,18 +67,18 @@ function run_reopt_scenarios()
             inputs["BARGAPSTOP"] = gapstop
             inputs["BARPRIMALSTOP"] = primalstop
             results["inputs"] = inputs
-            open(results_filename(site, plus_deg), "w") do f
+            open(results_filename(site=site, plus_deg=plus_deg), "w") do f
                 write(f, JSON.json(results))
             end
         end
     end
 end
 
-function summarize_results()
+function summarize_results(; sites, warming_plus_deg_C)
     for site in sites
         df_results_summary = DataFrame("Warming scenario" => ["Active cooling needed (MMBtu)", "PV size (W)", "Battery size (W)", "Battery size (Wh)", "Time actively cooling (%)", "Optimality gap (%)"])
         for plus_deg in warming_plus_deg_C
-            results = JSON.parsefile(results_filename(site, plus_deg))
+            results = JSON.parsefile(results_filename(site=site, plus_deg=plus_deg))
             df_results_summary = hcat(df_results_summary, DataFrame(
                     "+$(plus_deg)C" => [
                         round(results["Thermosyphon"]["min_annual_active_cooling_mmbtu"], digits=3),
