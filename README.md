@@ -33,9 +33,9 @@ Possible inputs for the [thermosyphon model](https://github.com/NREL/REopt.jl/bl
 | `effective_conductance_btu_per_degF`                    | Real            | 141           |
 | `fixed_active_cooling_rate_kw`                          | Real            | 0.345         |
 | `COP_curve_points_ambient_temp_degF`                    | Array{<:Real,1} | [46, 52, 63]  |
-| `COP_curve_points_coefficient_of_performance_kw_per_kw` | Array{<:Real,1} | [9, 6, 3]     |
+| `COP_curve_points_COP_kw_per_kw`                        | Array{<:Real,1} | [9, 6, 3]     |
 | `structure_heat_to_ground_mmbtu_per_year`               | Real            | 5.9           |
-Thermosyphon coefficient of performance can be modeled as a flat value by providing a single value for `COP_curve_points_coefficient_of_performance_kw_per_kw`. Alternatively, COP can be modeled as a piecewise function, defined by a list of points. In this case, `COP_curve_points_ambient_temp_degF` and `COP_curve_points_coefficient_of_performance_kw_per_kw` are the temperature and COP values respectively of those points. Defaults for these are used when neither input is provided.
+Thermosyphon coefficient of performance can be modeled as a flat value by providing a single value for `COP_curve_points_COP_kw_per_kw`. Alternatively, COP can be modeled as a piecewise function, defined by a list of points. In this case, `COP_curve_points_ambient_temp_degF` and `COP_curve_points_COP_kw_per_kw` are the temperature and COP values respectively of those points. Defaults for these are used when neither input is provided.
 
 # Running Julia code
 The file src/main.jl is this project's main script to run analyses of DERs to supply a thermosyphon. This script defines sites and climate warming scenarios to run, chosen BESS size and cost, and optimization parameters to balance precision and solve time. The script then runs REopt for these scenarios, which each produces a JSON file of results. Finally, key results are summarized in CSV for each site. Modify src/main.jl and data/thermosyphon_scenario.json as desired and then run the following from this repository's top directory:
