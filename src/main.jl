@@ -37,18 +37,25 @@ global warming_plus_deg_C = [
 
 # RUN ANALYSIS
 
+RUN_REOPT = true
+SUMMARIZE_RESULTS = true
+
 # run REopt and produce result JSON files for all of the scenarios defined above
 # comment out in order to only summarize existing results JSON files
-run_reopt_scenarios(sites=sites, warming_plus_deg_C=warming_plus_deg_C, 
-                    BESS_size_kwh=BESS_size_kwh, BESS_size_kw=BESS_size_kw, 
-                    BESS_capx_cost_per_kwh=BESS_capx_cost_per_kwh, 
-                    PV_capx_cost_per_kw=PV_capx_cost_per_kw, 
-                    PV_om_cost_per_kw_per_year=PV_om_cost_per_kw_per_year,
-                    maxtime=maxtime,
-                    relstop=relstop,
-                    gapstop=gapstop,
-                    primalstop=primalstop)
+if RUN_REOPT
+    run_reopt_scenarios(sites=sites, warming_plus_deg_C=warming_plus_deg_C, 
+                        BESS_size_kwh=BESS_size_kwh, BESS_size_kw=BESS_size_kw, 
+                        BESS_capx_cost_per_kwh=BESS_capx_cost_per_kwh, 
+                        PV_capx_cost_per_kw=PV_capx_cost_per_kw, 
+                        PV_om_cost_per_kw_per_year=PV_om_cost_per_kw_per_year,
+                        maxtime=maxtime,
+                        relstop=relstop,
+                        gapstop=gapstop,
+                        primalstop=primalstop)
+end
 
 # summarize key results for all the scenarios defined above into a CSV file
 # comment out in order to only run the REopt analysis and not generate a summary table
-summarize_results(sites=sites, warming_plus_deg_C=warming_plus_deg_C)
+if SUMMARIZE_RESULTS
+    summarize_results(sites=sites, warming_plus_deg_C=warming_plus_deg_C)
+end
