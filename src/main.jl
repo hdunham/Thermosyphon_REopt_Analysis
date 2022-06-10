@@ -1,11 +1,10 @@
 include("utils.jl")
 
 # OPTIMIZATION SOLVE PARAMETERS
-# increase stop values or decrease time limit for faster and less precise solution
-global maxtime = 600
-global relstop = 1e-3
-global gapstop = 1e-4
-global primalstop = 1e-4
+solver = "HiGHS" # options: "HiGHS" or "Xpress"
+# increase MIP_relative_gap_stop or decrease max_solve_time for faster and less precise solution
+max_solve_time = 600.0
+MIP_relative_gap_stop = 1e-3
 
 # BATTERY SPECIFICATIONS
 # in order to achieve reasonable solve time, battery sizing is fixed
@@ -14,21 +13,21 @@ volts_per_battery = 12.8
 amp_hours_per_battery = 54
 max_amps_per_battery = 25
 BESS_total_cost = 948
-global BESS_size_kwh = BESS_kwh(num_batteries=num_batteries_in_BESS, volts=volts_per_battery, amp_hours=amp_hours_per_battery)
-global BESS_size_kw = BESS_kw(num_batteries=num_batteries_in_BESS, volts=volts_per_battery, max_amps=max_amps_per_battery)
-global BESS_capx_cost_per_kwh = BESS_total_cost / size_kwh
+BESS_size_kwh = BESS_kwh(num_batteries=num_batteries_in_BESS, volts=volts_per_battery, amp_hours=amp_hours_per_battery)
+BESS_size_kw = BESS_kw(num_batteries=num_batteries_in_BESS, volts=volts_per_battery, max_amps=max_amps_per_battery)
+BESS_capx_cost_per_kwh = BESS_total_cost / size_kwh
 
 # PV SPECIFICATIONS
-global PV_capx_cost_per_kw = 4800
-global PV_om_cost_per_kw_per_year = 48
+PV_capx_cost_per_kw = 4800
+PV_om_cost_per_kw_per_year = 48
 
 # SCENARIOS
-global sites = [
+sites = [
         # Dict("name" => "fairbanks","longitude" => -149.8514, "latitude" => 61.1975),
         # Dict("name" => "huslia","longitude" => -156.383, "latitude" => 65.7),
         Dict("name" => "aniak", "longitude" => -159.533, "latitude" => 61.583)
     ]
-global warming_plus_deg_C = [
+warming_plus_deg_C = [
         0,
         2,
         5
@@ -43,7 +42,8 @@ SUMMARIZE_RESULTS = true
 # run REopt and produce result JSON files for all of the scenarios defined above
 # comment out in order to only summarize existing results JSON files
 if RUN_REOPT
-    run_reopt_scenarios(sites=sites, warming_plus_deg_C=warming_plus_deg_C, 
+    run_reopt_scenarios(solver=solver, 
+                        sites=sites, warming_plus_deg_C=warming_plus_deg_C, 
                         BESS_size_kwh=BESS_size_kwh, BESS_size_kw=BESS_size_kw, 
                         BESS_capx_cost_per_kwh=BESS_capx_cost_per_kwh, 
                         PV_capx_cost_per_kw=PV_capx_cost_per_kw, 

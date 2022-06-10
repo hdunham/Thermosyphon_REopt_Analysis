@@ -1,5 +1,6 @@
 using JuMP
 using Xpress
+using HiGHS
 using REopt
 using DataFrames
 import JSON
@@ -15,7 +16,8 @@ function results_filename(; site, plus_deg)
     return "results/thermosyphon_results_$(lowercase(site["name"]))$(plus_deg_string).json"
 end
 
-function run_reopt_scenarios(; sites, warming_plus_deg_C, 
+function run_reopt_scenarios(; solver, 
+                            sites, warming_plus_deg_C, 
                             BESS_size_kwh, BESS_size_kw, 
                             BESS_capx_cost_per_kwh, 
                             PV_capx_cost_per_kw, 
@@ -56,16 +58,30 @@ function run_reopt_scenarios(; sites, warming_plus_deg_C,
             inputs["PV"]["prod_factor_series"] = prod_factor
             inputs["Thermosyphon"]["ambient_temp_degF"] = amb_temp_degF
 
-            m = Model(()->Xpress.Optimizer(MAXTIME=-maxtime, MIPRELSTOP=relstop, BARGAPSTOP=gapstop, BARPRIMALSTOP=primalstop))
-            # m = Model(()->HiGHS.Optimizer(MAXTIME=-maxtime, MIPRELSTOP=relstop, BARGAPSTOP=gapstop, BARPRIMALSTOP=primalstop))
-            # set_optimizer_attribute(model, "time_limit", 60.0)
-
+            if solver == "Xpress"
+                m = Model(optimizer_with_attributes(
+                    Xpress.Optimizer, 
+                    "MAXTIME" => max_solve_time,
+                    "MIPRELSTOP" => MIP_relative_gap_stop)
+                )
+            elseif solver == "HiGHS"
+                m = Model(optimizer_with_attributes(
+                    HiGHS.Optimizer, 
+                    "time_limit" => max_solve_time,
+                    "mip_rel_gap" => MIP_relative_gap_stop, 
+                    "output_flag" => false, 
+                    "log_to_console" => false)
+                )
+            else
+                throw(@error "Solver not supported. Add the solver's Julia wrapper package to the project 
+                    environment with the command ']add <package name>', add package to using list in utils.jl, 
+                    and add code in function run_reopt_scenarios in utils.jl to create JuMP model with this optimizer.")
+            end
+            
             results = run_reopt(m, inputs)
 
-            inputs["MAXTIME"] = maxtime
-            inputs["MIPRELSTOP"] = relstop
-            inputs["BARGAPSTOP"] = gapstop
-            inputs["BARPRIMALSTOP"] = primalstop
+            inputs["MAXTIME"] = max_solve_time
+            inputs["MIPRELSTOP"] = MIP_relative_gap_stop
             results["inputs"] = inputs
             open(results_filename(site=site, plus_deg=plus_deg), "w") do f
                 write(f, JSON.json(results))
