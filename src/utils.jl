@@ -90,7 +90,7 @@ function summarize_results(; sites, warming_plus_deg_C)
                     ]
             ))
         end
-        CSV.write(joinpath("results","$(lowercase(site["name"]))_results_summary.csv", df_results_summary))
+        CSV.write(joinpath("results","$(lowercase(site["name"]))_results_summary.csv"), df_results_summary)
     end
 end
 
