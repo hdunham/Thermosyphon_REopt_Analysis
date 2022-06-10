@@ -276,6 +276,18 @@ git-tree-sha1 = "0fa77022fe4b511826b39c894c90daf5fce3334a"
 uuid = "cd3eb016-35fb-5094-929b-558a96fad6f3"
 version = "0.9.17"
 
+[[deps.HiGHS]]
+deps = ["HiGHS_jll", "MathOptInterface", "SparseArrays"]
+git-tree-sha1 = "bb6b049c06370af5319d86d977429a01dd09e6d6"
+uuid = "87dc4568-4c63-4d18-b0c0-bb2238e4078b"
+version = "1.1.3"
+
+[[deps.HiGHS_jll]]
+deps = ["Artifacts", "CompilerSupportLibraries_jll", "JLLWrappers", "Libdl", "Pkg"]
+git-tree-sha1 = "b0bf110765a077880aab84876f9f0b8de0407561"
+uuid = "8fd58aa0-07eb-5a78-9b36-339c94fd15ea"
+version = "1.2.2+0"
+
 [[deps.ImageCore]]
 deps = ["AbstractFFTs", "ColorVectorSpace", "Colors", "FixedPointNumbers", "Graphics", "MappedArrays", "MosaicViews", "OffsetArrays", "PaddedViews", "Reexport"]
 git-tree-sha1 = "9a5c62f231e5bba35695a20988fc7cd6de7eeb5a"
