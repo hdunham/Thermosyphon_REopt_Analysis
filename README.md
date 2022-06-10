@@ -38,7 +38,7 @@ Possible inputs for the [thermosyphon model](https://github.com/NREL/REopt.jl/bl
 Thermosyphon coefficient of performance can be modeled as a flat value by providing a single value for `COP_curve_points_COP_kw_per_kw`. Alternatively, COP can be modeled as a piecewise function, defined by a list of points. In this case, `COP_curve_points_ambient_temp_degF` and `COP_curve_points_COP_kw_per_kw` are the temperature and COP values respectively of those points. Defaults for these are used when neither input is provided.
 
 # Running Julia code
-The file src/main.jl is this project's main script to run analyses of DERs to supply a thermosyphon. This script defines sites and climate warming scenarios to run, chosen BESS size and cost, and optimization parameters to balance precision and solve time. The script then runs REopt for these scenarios, which each produces a JSON file of results. Finally, key results are summarized in CSV for each site. Modify src/main.jl and data/thermosyphon_scenario.json as desired and then run the following from this repository's top directory:
+The file src/main.jl is this project's main script to run analyses of DERs to supply a thermosyphon. This script defines sites and climate warming scenarios to run, chosen BESS size and cost, PV costs, and optimization parameters to balance precision and solve time. The script then runs REopt for these scenarios, which each produces a JSON file of results (thermosyphon_results_ &ltsite>_ &ltwarming scenario>.json). Finally, key results are summarized in CSV for each site (&ltsite>_results_summary.csv). Modify src/main.jl and data/thermosyphon_scenario.json as desired and then run the following from this repository's top directory:
 ```julia
 julia --project=.
                _
