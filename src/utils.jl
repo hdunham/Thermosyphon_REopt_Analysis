@@ -28,7 +28,7 @@ function run_reopt_scenarios(; sites, warming_plus_deg_C,
     temp_deg_C_col_name = "TempC"
 
     inputs = JSON.parsefile(joinpath("data","thermosyphon_scenario.json"))
-    if !("loads_kw" in inputs["ElectricLoad"])
+    if !("loads_kw" in keys(inputs["ElectricLoad"]))
         inputs["ElectricLoad"]["loads_kw"] = zeros(8760)
     end
     inputs["PV"]["max_kw"] = BESS_size_kw*2 # tightened max can help reduce solve time
@@ -57,8 +57,8 @@ function run_reopt_scenarios(; sites, warming_plus_deg_C,
             inputs["Thermosyphon"]["ambient_temp_degF"] = amb_temp_degF
 
             m = Model(()->Xpress.Optimizer(MAXTIME=-maxtime, MIPRELSTOP=relstop, BARGAPSTOP=gapstop, BARPRIMALSTOP=primalstop))
-            m = Model(()->HiGHS.Optimizer(MAXTIME=-maxtime, MIPRELSTOP=relstop, BARGAPSTOP=gapstop, BARPRIMALSTOP=primalstop))
-            set_optimizer_attribute(model, "time_limit", 60.0)
+            # m = Model(()->HiGHS.Optimizer(MAXTIME=-maxtime, MIPRELSTOP=relstop, BARGAPSTOP=gapstop, BARPRIMALSTOP=primalstop))
+            # set_optimizer_attribute(model, "time_limit", 60.0)
 
             results = run_reopt(m, inputs)
 
