@@ -26,7 +26,7 @@ The file data/thermosyphon_scenario.json contains the base set of inputs to be u
 This repository uses a [custom branch](https://github.com/NREL/REopt.jl/tree/alaska_thermosyphon) of the REopt.jl package that includes a thermosyphon model. By including the `"Thermosyphon"` key, a thermosyphon will be included in the optimization, using default values for any inputs not provided. 
 Possible inputs for the [thermosyphon model](https://github.com/NREL/REopt.jl/blob/alaska_thermosyphon/src/core/thermosyphon.jl) are:
 | Name                                                    | Type            | Default       |
-|---------------------------------------------------------|----------------:|--------------:|
+|:--------------------------------------------------------|----------------:|--------------:|
 | `ambient_temp_degF`                                     | Array{<:Real,1} | TMY profile   |
 | `ground_temp_degF`                                      | Real            | 25            |
 | `passive_to_active_cutoff_temp_degF`                    | Real            | 20            |
