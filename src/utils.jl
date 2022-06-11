@@ -62,13 +62,17 @@ function run_reopt_scenarios(; solver,
                 m = Model(optimizer_with_attributes(
                     Xpress.Optimizer, 
                     "MAXTIME" => max_solve_time,
-                    "MIPRELSTOP" => MIP_relative_gap_stop)
+                    "MIPRELSTOP" => optimality_gap_relative_tolerance,
+                    "BARPRIMALSTOP" => primal_feasibility_tolerance,
+                    "BARDUALSTOP" => dual_feasibility_tolerance)
                 )
             elseif solver == "HiGHS"
                 m = Model(optimizer_with_attributes(
                     HiGHS.Optimizer, 
                     "time_limit" => max_solve_time,
-                    "mip_rel_gap" => MIP_relative_gap_stop, 
+                    "mip_rel_gap" => optimality_gap_relative_tolerance, 
+                    "primal_feasibility_tolerance" => primal_feasibility_tolerance,
+                    "dual_feasibility_tolerance" => dual_feasibility_tolerance,
                     "output_flag" => false, 
                     "log_to_console" => false)
                 )
@@ -80,8 +84,10 @@ function run_reopt_scenarios(; solver,
             
             results = run_reopt(m, inputs)
 
-            inputs["MAXTIME"] = max_solve_time
-            inputs["MIPRELSTOP"] = MIP_relative_gap_stop
+            inputs["max_solve_time"] = max_solve_time
+            inputs["optimality_gap_relative_tolerance"] = optimality_gap_relative_tolerance
+            inputs["primal_feasibility_tolerance"] = primal_feasibility_tolerance
+            inputs["dual_feasibility_tolerance"] = dual_feasibility_tolerance
             results["inputs"] = inputs
             open(results_filename(site=site, plus_deg=plus_deg), "w") do f
                 write(f, JSON.json(results))

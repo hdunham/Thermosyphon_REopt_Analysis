@@ -4,7 +4,9 @@ include("utils.jl")
 solver = "HiGHS" # options: "HiGHS" or "Xpress"
 # increase MIP_relative_gap_stop or decrease max_solve_time for faster and less precise solution
 max_solve_time = 600.0
-MIP_relative_gap_stop = 1e-3
+optimality_gap_relative_tolerance = 1e-2
+primal_feasibility_tolerance = 1e-3
+dual_feasibility_tolerance = 1e-3
 
 # BATTERY SPECIFICATIONS
 # in order to achieve reasonable solve time, battery sizing is fixed
