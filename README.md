@@ -35,6 +35,7 @@ Possible inputs for the [thermosyphon model](https://github.com/NREL/REopt.jl/bl
 | `COP_curve_points_ambient_temp_degF`                    | Array{<:Real,1} | [46, 52, 63]  |
 | `COP_curve_points_COP_kw_per_kw`                        | Array{<:Real,1} | [9, 6, 3]     |
 | `structure_heat_to_ground_mmbtu_per_year`               | Real            | 5.9           |
+
 Thermosyphon coefficient of performance can be modeled as a flat value by providing a single value for `COP_curve_points_COP_kw_per_kw`. Alternatively, COP can be modeled as a piecewise function, defined by a list of points. In this case, `COP_curve_points_ambient_temp_degF` and `COP_curve_points_COP_kw_per_kw` are the temperature and COP values respectively of those points. Defaults for these are used when neither input is provided.
 
 # Running Julia code
