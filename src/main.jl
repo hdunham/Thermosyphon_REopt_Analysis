@@ -17,7 +17,7 @@ max_amps_per_battery = 25
 BESS_total_cost = 948
 BESS_size_kwh = BESS_kwh(num_batteries=num_batteries_in_BESS, volts=volts_per_battery, amp_hours=amp_hours_per_battery)
 BESS_size_kw = BESS_kw(num_batteries=num_batteries_in_BESS, volts=volts_per_battery, max_amps=max_amps_per_battery)
-BESS_capx_cost_per_kwh = BESS_total_cost / size_kwh
+BESS_capx_cost_per_kwh = BESS_total_cost / BESS_size_kwh
 
 # PV SPECIFICATIONS
 PV_capx_cost_per_kw = 4800
@@ -50,10 +50,10 @@ if RUN_REOPT
                         BESS_capx_cost_per_kwh=BESS_capx_cost_per_kwh, 
                         PV_capx_cost_per_kw=PV_capx_cost_per_kw, 
                         PV_om_cost_per_kw_per_year=PV_om_cost_per_kw_per_year,
-                        maxtime=maxtime,
-                        relstop=relstop,
-                        gapstop=gapstop,
-                        primalstop=primalstop)
+                        max_solve_time=max_solve_time,
+                        optimality_gap_relative_tolerance=optimality_gap_relative_tolerance,
+                        primal_feasibility_tolerance=primal_feasibility_tolerance,
+                        dual_feasibility_tolerance=dual_feasibility_tolerance)
 end
 
 # summarize key results for all the scenarios defined above into a CSV file

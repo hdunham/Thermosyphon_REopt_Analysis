@@ -22,10 +22,10 @@ function run_reopt_scenarios(; solver,
                             BESS_capx_cost_per_kwh, 
                             PV_capx_cost_per_kw, 
                             PV_om_cost_per_kw_per_year,
-                            maxtime=3600,
-                            relstop=1e-6,
-                            gapstop=1e-6,
-                            primalstop=1e-6)
+                            max_solve_time=3600,
+                            optimality_gap_relative_tolerance=1e-4,
+                            primal_feasibility_tolerance=1e-6,
+                            dual_feasibility_tolerance=1e-6)
     PV_prod_factor_col_name = "ProdFactor"
     temp_deg_C_col_name = "TempC"
 
