@@ -3,7 +3,7 @@ include("utils.jl")
 # OPTIMIZATION SOLVE PARAMETERS
 solver = "HiGHS" # options: "HiGHS" or "Xpress"
 # increase MIP_relative_gap_stop or decrease max_solve_time for faster and less precise solution
-max_solve_time = 600.0
+max_solve_time = 1800.0
 optimality_gap_relative_tolerance = 1e-2
 primal_feasibility_tolerance = 1e-3
 dual_feasibility_tolerance = 1e-3
