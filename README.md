@@ -19,9 +19,9 @@ julia> Pkg.instantiate()
 ```
 
 # REopt Inputs
-The master branch of [REopt.jl package](https://github.com/NREL/REopt.jl) has [online documentation](https://nrel.github.io/REopt.jl/dev/) (you can also find the documentation linked in the Github repository README.md). [REopt inputs](https://nrel.github.io/REopt.jl/dev/reopt/inputs/) are provided either from a JSON file or a Julia dictionary. Note that if we removed a technology key from the JSON file then this technology would not be evaluated.
+The master branch of [REopt.jl package](https://github.com/NREL/REopt.jl) has [online documentation](https://nrel.github.io/REopt.jl/dev/) (you can also find the documentation linked in the Github repository README.md). [REopt inputs](https://nrel.github.io/REopt.jl/dev/reopt/inputs/) are provided either from a JSON file or a Julia dictionary. Note that if we removed a technology key from the JSON file then this technology would not be evaluated. 
 
-The file data/thermosyphon_scenario.json contains the base set of inputs to be used for an analysis sizing PV with BESS to supply a thermosyphon. For an off-grid system, the `ElectricUtility` inputs `outage_start_time_step` and `outage_end_time_step` are set to 1 and 8760 respectively, and the inputs provided in `ElectricTariff` aren't used.
+The file data/thermosyphon_scenario.json contains a base set of inputs to be used for an analysis sizing PV with BESS to supply a thermosyphon. For an off-grid system, the `ElectricUtility` inputs `outage_start_time_step` and `outage_end_time_step` are set to 1 and 8760 respectively, and the inputs provided in `ElectricTariff` aren't used. You may want to modify PV and Financial inputs to reflect your conditions.
 
 This repository uses a [custom branch](https://github.com/NREL/REopt.jl/tree/alaska_thermosyphon) of the REopt.jl package that includes a thermosyphon model. By including the `Thermosyphon` key, a thermosyphon will be included in the optimization, using default values for any inputs not provided. 
 Possible inputs for the [thermosyphon model](https://github.com/NREL/REopt.jl/blob/alaska_thermosyphon/src/core/thermosyphon.jl) are:
