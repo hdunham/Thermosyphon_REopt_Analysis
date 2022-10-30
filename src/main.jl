@@ -25,9 +25,9 @@ PV_om_cost_per_kw_per_year = 48
 
 # SCENARIOS
 sites = [
-        # Dict("name" => "fairbanks","longitude" => -149.8514, "latitude" => 61.1975),
-        # Dict("name" => "huslia","longitude" => -156.383, "latitude" => 65.7),
-        Dict("name" => "aniak", "longitude" => -159.533, "latitude" => 61.583)
+        # Dict("name" => "Fairbanks","longitude" => -149.8514, "latitude" => 61.1975),
+        # Dict("name" => "Huslia","longitude" => -156.383, "latitude" => 65.7),
+        Dict("name" => "Aniak", "longitude" => -159.533, "latitude" => 61.583)
     ]
 warming_plus_deg_C = [
         0,
@@ -44,7 +44,7 @@ SUMMARIZE_RESULTS = true
 # run REopt and produce result JSON files for all of the scenarios defined above
 # comment out in order to only summarize existing results JSON files
 if RUN_REOPT
-    run_reopt_scenarios(solver=solver, 
+    run_reopt_scenarios(solver_name=solver, 
                         sites=sites, warming_plus_deg_C=warming_plus_deg_C, 
                         BESS_size_kwh=BESS_size_kwh, BESS_size_kw=BESS_size_kw, 
                         BESS_capx_cost_per_kwh=BESS_capx_cost_per_kwh, 
@@ -59,5 +59,5 @@ end
 # summarize key results for all the scenarios defined above into a CSV file
 # comment out in order to only run the REopt analysis and not generate a summary table
 if SUMMARIZE_RESULTS
-    summarize_results(sites=sites, warming_plus_deg_C=warming_plus_deg_C)
+    summarize_and_plot_results(sites=sites, warming_plus_deg_C=warming_plus_deg_C)
 end

@@ -1,7 +1,8 @@
 Warming scenario,+0C,+2C,+5C
 Active cooling needed (MMBtu),1.224,2.205,3.322
-PV size (W),50.9,101.6,179.3
-Battery size (W),640,640,640
-Battery size (Wh),1380,1380,1380
 Time actively cooling (%),11.87,21.39,32.21
+PV size (W),50.9,101.6,179.3
+Battery size (W),640.0,640.0,640.0
+Battery size (Wh),1380.0,1380.0,1380.0
+LCC excluding thermosyphon ($),1283.0,1446.0,1695.0
 Optimality gap (%),0.07,0.23,0.25
