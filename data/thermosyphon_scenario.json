@@ -5,7 +5,8 @@
     "PV": {
         "installed_cost_per_kw": 4800,
         "om_cost_per_kw": 48,
-        "can_curtail": true
+        "can_curtail": true,
+        "macrs_option_years": 5
     },
     "ElectricStorage": {
         "can_grid_charge": false
@@ -19,6 +20,10 @@
         "blended_annual_demand_rate": 10000
     },
     "Financial": {
+        "om_cost_escalation_pct": 0.025,
+        "offtaker_tax_pct": 0.26,
+        "offtaker_discount_pct": 0.0564,
+        "macrs_five_year": [0.2, 0.32, 0.192, 0.1152, 0.1152, 0.0576]
     },
     "ElectricLoad": {
     }
