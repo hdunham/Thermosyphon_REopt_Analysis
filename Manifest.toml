@@ -785,7 +785,7 @@ uuid = "3fa0cd96-eef1-5676-8a61-b3b8758bbffb"
 
 [[deps.REopt]]
 deps = ["ArchGDAL", "Dates", "DelimitedFiles", "HTTP", "JSON", "JuMP", "LinDistFlow", "Logging", "MathOptInterface", "Roots", "Shapefile", "TestEnv"]
-git-tree-sha1 = "76369f54d9f4b82201ecff5d261fa7029091a119"
+git-tree-sha1 = "9403618dabc870fb4a643837fe8a6783ba1d0d9a"
 repo-rev = "alaska_thermosyphon"
 repo-url = "https://github.com/NREL/REopt.jl.git"
 uuid = "d36ad4e8-d74a-4f7a-ace1-eaea049febf6"
