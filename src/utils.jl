@@ -140,7 +140,7 @@ function plot_thermosyphon_series(; site_name::String, warming_plus_deg_C::Real)
     )
     plot!(
         twinx(),
-        results_thermosyphon["coefficient_of_performance_series_mmbtu_per_kwh"],
+        results_thermosyphon["COP_series_mmbtu_per_kwh"],
         color=:red,
         xticks=:none,
         label="COP",
